@@ -1,0 +1,112 @@
+<{if $error}>
+    <{$error}><br />
+    <form method="get" action="query.php">
+        <b>IP </b><input type='text' name='ip' size='20' maxlength='16' value="<{$ip}>"> 
+        <b>Port </b><input type='text' name='port' size='8' maxlength='5' value="<{$port}>">
+        <input type="submit" value="Get Stats">
+    </form>
+    <br>Or pick a server from the list:<br>
+    <form method="post" action="query.php">
+        <SELECT name="serverid">
+            <OPTION value='null'>-SELECT SERVER-</OPTION>
+            <{html_options options=$servers}>
+        </SELECT>
+        <input type="submit" value="Pick Server">
+    </form>
+    
+<{else}>
+    <table cellpadding=0 cellspacing=0 border=0 align=top width=100%>
+        <tr>
+            <td>
+                <table cellpadding=0 cellspacing=0 border=0 width=100%>
+                    <tr>
+                        <td colspan=2>
+                            <h3><{$results.name}></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <br>Running at <span id="lite"><{$results.cpu}> mhz</span> under a <span id="lite"><{$results.linux}></span> environment
+                            <br>Tribes2 Version <span id="lite"><{$results.build}></span>
+                            <br>Playing <span id="lite"><{$results.mod}></span> rules
+                        </td>
+                        <td><br>Dedicated Server: <span id="lite"><{$results.dedicated}></span>
+                            <br>PW Protected: <span id="lite"><{$results.password}></span>
+                            <br>Aliases Allowed: <span id="lite"><{$results.alias_allowed}></span>
+                            <br>In Tournament Mode: <span id="lite"><{$results.tournament}></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <br>Game Type: <span id="lite"><{$results.maptype}></span>
+                            <br>Map: <span id="lite"><{$results.map}></span>
+                            <br>Players: <span id="lite"><{$results.players}> / <{$results.maxplayers}> (<{$results.bots}> bots)</span>
+                        </td>
+                        <td>
+                        <br>
+                        <form method="get" action="query.php">
+                            <b>IP </b><input type='text' name='ip' size='20' maxlength='16' value="<{$ip}>"> 
+                            <b>Port </b><input type='text' name='port' size='8' maxlength='5' value="<{$port}>">
+                            <input type="submit" value="Get Stats">
+                        </form>
+                        <br>Or pick a server from the list:<br>
+                        <form method="post" action="query.php">
+                            <SELECT name="serverid">
+                                <OPTION value='null'>-SELECT SERVER-</OPTION>
+                                <{html_options options=$servers}>
+                            </SELECT>
+                            <input type="submit" value="Pick Server">
+                        </form>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding=0 cellspacing=0 border=0 align=top width=100%>
+        <tr>
+            <td>
+                <table width=500 border=0 cols=3>
+                    <tr class='even'>
+                        <td id="normal" width=100>
+                            <span id="header2">Score</span>
+                        </td>
+                        <td id="normal" width=250>
+                            <span id="header2">Name</span>
+                        </td>
+                        <td id="normal" width=150>
+                            <span id="header2">Status</span>
+                        </td>
+                    </tr>
+                </table>
+                <{foreach item=thisteam from=$results.team}>
+                    <table width=500 border=0 cols=3>
+                        <tr class='odd'>
+                            <td id=normal width=100>
+                                <{$thisteam.score}>
+                            </td>
+                            <td id=normal width=250>
+                                <{$thisteam.name}>
+                            </td>
+                            <td id=normal width=150>
+                                <{$thisteam.size}> Players
+                            </td>
+                        </tr>
+                        <{foreach item=thisplayer from=$thisteam.players}>
+                            <tr class="even">
+                                <td id="lite" width=100>
+                                    <{$thisplayer.score}>
+                                </td>
+                                <td id="lite" width=250>
+                                    <{$thisplayer.name}>
+                                </td>
+                                <td id="lite" width=150>
+                                    <{$thisplayer.flags}>
+                                </td>
+                            </tr>
+                        <{/foreach}>
+                <{/foreach}>
+            </td>
+        </tr>
+    </table>
+<{/if}>

@@ -1,0 +1,18 @@
+<table width='100%' border='0' cellpadding='4' cellspacing='1'>
+   <tr class="head">
+       <td><{$smarty.const._MA_SBDATE}></td>
+       <td><{$smarty.const._MA_SB_TEAMNAME}></td>
+       <td><{$smarty.const._MA_SB_TAG}></td>
+       <td><{$smarty.const._MA_SBIRCCHANNEL}></td>
+   </tr>
+   <{foreach item=scrimm from=$scrimms}>
+       <tr class="<{cycle values='odd,even'}>">
+           <td><a href="viewscrimm.php?scrimmid=<{$scrimm.scrimmid}>"><{$scrimm.begin}></a></td>
+           <td><a href="<{$scrimm.team.homepage.value}>" target="_blank"><{$scrimm.team.name.value}></a></td>
+           <td><{$scrimm.team.tag.value}></td>
+           <td><{$scrimm.team.irc.value}></td>
+       </tr>
+   <{/foreach}>
+</table>
+
+<{include file="db:system_notification_select.html"}>

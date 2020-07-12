@@ -1,0 +1,67 @@
+<table border='0' cellpadding='0' cellspacing='0' valign='top' width='100%'>
+	<tr>
+	   <td class='odd' colspan='2'>
+	       <table width='100%' border='0' cellpadding='4' cellspacing='1'>
+	           <tr>
+	               <td class='head' width='13%'><b><{$smarty.const._MA_SB_TEAMNAME}></b></td>
+	               <td class='even' colspan='3'><{$team.name.value}></td>
+	           </tr>
+	           <tr>
+	               <td class='head' width='13%'><b><{$smarty.const._MA_SBDATE}></b></td>
+	               <td class='odd' colspan="3"><{$scrimm.begin}></td>
+	           </tr>
+	           <tr>
+	               <td class='head'><b><{$smarty.const._MA_SB_CONTACT}></b></td>
+	               <td class='even'><a href="<{$xoops_url}>/userinfo.php?uid=<{$scrimm.adminid}>"><{$scrimm.admin}></td>
+	               <td class='head'><b><{$smarty.const._MA_SBIRCCHANNEL}></b></td>
+	               <td class='odd'><{$team.irc.value}></td>
+	           </tr>
+	           <{if $teamadmin}>
+	               <tr>
+	                   <td class='foot' colspan="4">
+	                       <form action="reply.php" method="POST">
+	                       <input type="hidden" name="scrimmid" value="<{$scrimm.scrimmid}>">
+	                       <input type="submit" name="Reply" value="Reply">
+	                       </form>
+	                   </td>
+	               </tr>
+	           <{/if}>
+	       </table>
+	   </td>
+    </tr>
+    <{if $scrimmowner == 1}>
+        <{if $replies}>
+            <tr>
+                <th><{$smarty.const._MA_SB_TEAMNAME}></th>
+                <th><{$smarty.const._MA_SBIRCCHANNEL}></th>
+            </tr>
+            <{foreach item=replyteam from=$replies}>
+                <tr class='<{cycle values="odd,even"}>'>
+                    <td><a href="<{$replyteam.homepage}>"><{$replyteam.name}> (<{$replyteam.tag}>)</a></td>
+                    <td><{$replyteam.irc}></td>
+                </tr>
+            <{/foreach}>
+        <{/if}>
+	<{/if}>
+</table>
+
+<{if $scrimmowner == 1}>
+    <{include file="db:system_notification_select.html"}>
+<{/if}>
+
+<div style="text-align: center; padding: 3px; margin:3px;">
+	<{$commentsnav}>
+	<{$lang_notice}>
+</div>
+
+<div style="margin:3px; padding: 3px;">
+<!-- start comments loop -->
+<{if $comment_mode == "flat"}>
+	<{include file="db:system_comments_flat.html"}>
+<{elseif $comment_mode == "thread"}>
+	<{include file="db:system_comments_thread.html"}>
+<{elseif $comment_mode == "nest"}>
+	<{include file="db:system_comments_nest.html"}>
+<{/if}>
+<!-- end comments loop -->
+</div>

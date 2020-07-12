@@ -1,0 +1,10 @@
+TODO: 
+Kode i bookmatch.php (check)
+XoopsBooking & XoopsBookingHandler klasser
+XoopsBooker & XoopsBookerHandler klasser
+Template i display-event.php
+serveradmin.php (begge to) redesignes med Smarty og tilføjelse af Rules & Admins metoder på relevante klasser
+admin interface til serverprefs
+
+FUTURE:
+{ServerType}Query klasser

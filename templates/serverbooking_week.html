@@ -1,0 +1,161 @@
+<table border="0" align="center" cellpadding="0" cellspacing="2">
+  <tr>
+      <td width="50%">
+        <H3>
+            <{$serverName}>
+        </H3>
+      </td>
+      <{if $showserveradmin}>
+        <td align="right">
+            <{$smarty.const._MA_SBSERVERADMIN}>
+            <{counter start=0 print=false assign=adminno}>
+            <{foreach item=admin from=$serveradmins}>
+                <{if $adminno != 0}>
+                    ,&nbsp;
+                <{/if}>
+                <{$admin.name}>
+                <{counter}>
+            <{/foreach}>                
+        </td>
+      <{/if}>
+      <td align=center>
+        <{$todaytime}>
+      </td>
+  </tr>
+</table>
+<table>
+  <tr>
+      <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+               <tr>
+                   <td colspan=3 align='center'>
+                        <{include file='db:server_select.html' title=$lang_selecttitle caption=$lang_selectcaption submit=$lang_submit name=$lang_serverid options=$servers selected=$serverid url=$url hidden=$hidden reg_title=$reg_title regoptions=$regoptions selected_reg=$selected_reg reg_caption=$reg_caption}>
+                   </td>
+               </tr>
+               <tr>
+                   <td colspan=3 align='center'>
+                       <form method=GET action=index.php>
+                       <INPUT TYPE='hidden' name='view' value='week'>
+                       <input type="hidden" name="serverid[]" value="<{$serverid}>">
+                       <select name='zone'>
+                            <{html_options options=$zones selected=$zone}>
+                       </select>
+                       <INPUT TYPE='submit' VALUE='<{$smarty.const._NW_GO}>'>
+                       </form>
+                   </td>
+               </tr>
+               <tr class='itemHead'>
+                   <td>
+                       <a href='index.php?view=week&zone=<{$zone}><{$prevlink}>'>
+                       <{$smarty.const._MA_SBPREVWEEK}>
+                       </a>
+                   </td>
+                   <td align='center'>
+                       <{$smarty.const._MAIN_WEEKNO}>
+                       <{$week}>
+                   </td>
+                   <td align=right>
+                       <a href='index.php?view=week&zone=<{$zone}><{$nextlink}>'>
+                       <{$smarty.const._MA_SBNEXTWEEK}>
+                       </a>
+                   </td>
+               </tr>
+        </table>
+     </td>
+  </tr>
+  <tr>
+     <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='1'>
+               <tr>
+                   <{foreach item=thisday from=$days}>
+                    <{if $thisday.day == $today AND $thisday.month == $todaymonth}>
+                        <td width="14%" class='odd'>
+                    <{else}>
+                        <td width="14%" class='even'>
+                    <{/if}>
+                    <{$thisday.weekday}> <{$thisday.day}>/<{$thisday.month}><br />
+                    <{if $thisday.noevents}>
+                        &nbsp;<br /> <br /><br />
+                    <{/if}>
+                    <{counter start=0 print=false assign=bookno}>
+                       <{foreach item=thisbooking from=$thisday.bookings}>
+                       		<{counter}>
+                            <img src='images/<{$thisbooking.type}>.gif' height='15' width='15'>
+                            <!--<font color='<{$thisbooking.statuscol}>'>
+                                <{$thisbooking.status}>
+                            </font>-->
+                            <a style="color: <{$thisbooking.statuscol}>" title='<{$thisbooking.servername}>' href='display-event.php?view=<{$hidden.view}>&id=<{$thisbooking.bookid}>'>
+                                <{$thisbooking.begin}>-<{$thisbooking.end}> <br />
+                                <{$thisbooking.title|truncate:16:"":true}>
+                            </a><br />
+                       <{/foreach}>
+                       <{foreach item=thisrule from=$thisday.rules}>
+                            <{counter}>
+                            <br />
+                            <img src='images/closed.gif' height='15' width='15'>
+                            <{$thisrule}>
+                       <{/foreach}>
+                       <{if $thisday.scrimms}>
+                            <br />Scrimm:
+                           <{foreach item=thisscrimm from=$thisday.scrimms}>
+                                <{counter}>
+                                <br />
+                                <!--<img src='images/scrimm.gif' height='15' width='15'>-->
+                                <a href="viewscrimm.php?scrimmid=<{$thisscrimm.scrimmid}>"><{$thisscrimm.begin}></a>
+                           <{/foreach}>
+                       <{/if}>
+                       <!--
+                       <{if $bookno ==1}>
+                       		<{if $thisday.day == $today}>
+                                 <tr class='odd'>
+                            <{else}>
+                                 <tr class='even'>
+                            <{/if}>
+                       			<td>
+                       				&nbsp;<br /> &nbsp;
+                       			</td>
+                       		</tr>
+                       	<{/if}>
+                       	-->
+                   </td>
+                   <{/foreach}>
+               </tr>
+        </table>
+     </td>
+  </tr>
+  <tr>
+    <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+            <tr>
+                <td align=left><font color="yellow"><{$smarty.const._MA_SBPENDING2}></td>
+                <td align=center><font color=green><{$smarty.const._MA_SBAPPROVED2}></td>
+                <td align=center><font color=blue><{$smarty.const._MA_SBONHOLD2}></td>
+                <td align=right><font color=red><{$smarty.const._MA_SBDECLINED2}></td>
+            </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+               <tr class='itemHead'>
+                   <td>
+                       <a href='index.php?view=week&zone=<{$zone}><{$prevlink}>'>
+                       <{$smarty.const._MA_SBPREVWEEK}>
+                       </a>
+                   </td>
+                   <td align='center'>
+                       <a href='index.php?view=month<{$serverlink}>'>
+                          <{$smarty.const._MA_SBMONTHVIEW}>
+                       </a>
+                   </td>
+                   <td align=right>
+                       <a href='index.php?view=week&zone=<{$zone}><{$nextlink}>'>
+                       <{$smarty.const._MA_SBNEXTWEEK}>
+                       </a>
+                   </td>
+               </tr>
+        </table>
+    </td>
+  </tr>
+</table>

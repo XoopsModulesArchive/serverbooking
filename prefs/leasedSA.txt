@@ -1,0 +1,26 @@
+// This is the file specifying time-limited SA claims on the server, as they
+// can be used for leasing out the machine for clanwars.
+// Any file with the same syntax as this can be used, even obtained via HTTP.
+// Anything standing behind a '//' is considered a comment.
+//
+// Each SA claim takes a separate line, in the format:
+// <WonID> <StartingTime> <EndTime>
+// Where <WonID> is the player's WonID that can be found via .whois or .wonid
+// on the Evolution Chat console.
+// The dates are formated like:
+// <2 digit year><2 digit month><2 digit day><2 digit hour><2 digit minute>
+//
+// Examples would be:
+// 0815 0301011800 0301012200 // January 1, 2003, 18:00-22:00, WonID 0815
+// 4711 0304011930 0304020000 // April 1st, 2003, 19:30-midnight, WonID 4711
+//
+// Since version 1.1.0, a fourth argument can be given, to determine
+// the admin level to be granted. 1 means Admin, 2 means SuperAdmin
+
+593956 7001010100 7001010100
+593956 0305122100 0305122300
+593956 0305142100 0305142300
+593956 0305292100 0305292300
+593956 0305292100 0305292300
+593956 0305292100 0305292300
+7539248 0305152100 0305152300

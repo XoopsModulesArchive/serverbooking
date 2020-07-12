@@ -1,0 +1,192 @@
+<table border="0" align="center" cellpadding="0" cellspacing="2">
+    <tr>
+      <td width="50%">
+        <h3>
+            <{$serverName}>
+        </h3>
+      </td>
+      <{if $showserveradmin}>
+        <td align="right">
+            <{$smarty.const._MA_SBSERVERADMIN}>
+            <{counter start=0 print=false assign=adminno}>
+            <{foreach item=admin from=$serveradmins}>
+                <{if $adminno != 0}>,&nbsp;<{/if}>
+                <{$admin.name}>
+                <{counter}>
+            <{/foreach}>                
+        </td>
+      <{/if}>
+      <td align=center>
+        <{$todaytime}>
+      </td>
+  </tr>
+</table>
+<table>
+  <tr>
+      <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>               
+               <tr class='itemHead'>
+                   <td>
+                       <a href='index.php?view=month<{$prevlink}>'>
+                       <{$smarty.const._MA_SBPREVMONTH}>
+                       </a>
+                   </td>
+                   <td align='center'>
+                       <form method=POST action=index.php>
+                       <INPUT TYPE='hidden' name='view' value='month'>
+                       <{foreach item=thisserver from=$serverid}>
+                            <INPUT TYPE='hidden' name='serverid[]' value='<{$thisserver}>'>
+                       <{/foreach}>
+                       <{html_select_date time=$timestamp prefix="" start_year="-2" end_year="+1" display_days=false}>
+                       <select name='zone'>
+                            <{html_options options=$zones selected=$zone}>
+                       </select>
+                       <INPUT TYPE='submit' VALUE='<{$smarty.const._NW_GO}>'>
+                       </form>
+                   </td>
+                   <td align=right>
+                       <a href='index.php?view=month<{$nextlink}>'>
+                       <{$smarty.const._MA_SBNEXTMONTH}>
+                       </a>
+                   </td>
+               </tr>
+        </table>
+     </td>
+  </tr>
+  <tr>
+    <td>
+        <table width='100%' border='0' align='left' cellpadding='5' cellspacing='1'>
+               <tr class='head' align="center">
+               	   <td>
+               	   		<{$smarty.const._MAIN_WEEKNO}>
+               	   </td>
+                   <td>
+                       <{$smarty.const._MA_SBMONDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBTUESDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBWEDNESDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBTHURSDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBFRIDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBSATURDAY}>
+                   </td>
+                   <td>
+                       <{$smarty.const._MA_SBSUNDAY}>
+                   </td>               </tr>
+               <{foreach item=thisrow from=$rows}>
+               <tr>
+               		<td width='7%' class='head' valign="middle" align="center">
+               		   <{$thisrow.row}>
+               		</td>
+                   <{foreach item=thisday from=$thisrow.events}>
+                    <{if $thisday.day == $today AND $thismonth == $todaymonth}>
+                        <td width='13%' class='odd'>
+                    <{else}>
+                        <td width='13%' class='even'>
+                    <{/if}>
+                        <b><{$thisday.day}></b><br />
+                    <{if $thisday.noevents}>
+                        &nbsp;<br /> <br /> <br />
+                    <{/if}>
+                       <{counter start=0 print=false assign=bookno}>
+                       <{foreach item=thisbooking from=$thisday.bookings}>
+                       		<{counter}>
+                       		<img src='images/<{$thisbooking.type}>.gif' height='15' width='15'><!--
+                       		<font color='<{$thisbooking.statuscol}>'>
+                       		   <{$thisbooking.status}>
+                       	    </font>-->
+                       	    <a style="color: <{$thisbooking.statuscol}>" title='<{$thisbooking.servername}>' href='display-event.php?view=<{$hidden.view}>&id=<{$thisbooking.bookid}>'>
+                       	        <{$thisbooking.begin}>-<{$thisbooking.end}> <br />
+                       	        <{$thisbooking.title|truncate:16:"":true}>
+                       	    </a><br />
+                       <{/foreach}>
+                       <{foreach item=thisrule from=$thisday.rules}>
+                            <{counter}>
+                            <br />
+                            <img src='images/closed.gif' height='15' width='15'>
+                            <{$thisrule}>
+                       <{/foreach}>
+                       <{if $thisday.scrimms}>
+                            <br />Scrimm:
+                           <{foreach item=thisscrimm from=$thisday.scrimms}>
+                                <{counter}>
+                                <br />
+                                <!--<img src='images/scrimm.gif' height='15' width='15'>-->
+                                <a href="viewscrimm.php?scrimmid=<{$thisscrimm.scrimmid}>"><{$thisscrimm.begin}></a>
+                           <{/foreach}>
+                       <{/if}>
+                       <!--
+                       <{if $totalno ==1}>
+                       		<{if $thisday.day == $today}>
+                                 <tr class='odd'>
+                            <{else}>
+                                 <tr class='even'>
+                            <{/if}>
+                       			<td>
+                       				&nbsp;<br /> &nbsp;
+                       			</td>
+                       		</tr>
+                       	<{/if}>
+                       	-->
+                   </td>
+                   <{/foreach}>
+                </tr>
+             <{/foreach}>
+        </table>
+    </td>
+  </tr><!--
+  <tr>
+    <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+            <tr>
+                <td align=left><font color="yellow"><{$smarty.const._MA_SBPENDING2}></td>
+                <td align=center><font color=green><{$smarty.const._MA_SBAPPROVED2}></td>
+                <td align=center><font color=blue><{$smarty.const._MA_SBONHOLD2}></td>
+                <td align=right><font color=red><{$smarty.const._MA_SBDECLINED2}></td>
+            </tr>
+        </table>
+    </td>
+  </tr>-->
+  <tr>
+    <td>
+         <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+               <tr class='itemHead'>
+                   <td>
+                       <a href='index.php?view=month<{$prevlink}>'>
+                       <{$smarty.const._MA_SBPREVMONTH}>
+                       </a>
+                   </td>
+                   <td align='center'>
+                       <a href='index.php?view=week<{$serverlink}>'>
+                          <{$smarty.const._MA_SBWEEKLYVIEW}>
+                       </a>
+                   </td>
+                   <td align=right>
+                       <a href='index.php?view=month<{$nextlink}>'>
+                       <{$smarty.const._MA_SBNEXTMONTH}>
+                       </a>
+                   </td>
+               </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+        <table width='100%' border='0' align='left' cellpadding='0' cellspacing='0'>
+            <tr>
+                <td align='center'>
+                    <{include file='db:server_select.html' title=$lang_selecttitle caption=$lang_selectcaption submit=$lang_submit name=$lang_serverid options=$servers selected=$serverid url=$url hidden=$hidden reg_title=$reg_title regoptions=$regoptions selected_reg=$selected_reg reg_caption=$reg_caption}>
+                </td>
+           </tr>
+        </table>
+    </td>
+  </tr>
+</table>
